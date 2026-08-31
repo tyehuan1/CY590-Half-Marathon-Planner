@@ -1,12 +1,15 @@
 [project]
 name = "cy590-half-marathon-planner"
 version = "0.1.0"
-description = "Add your description here"
+description = "This repo solves the project to make a basic LLM app. It uses the Duke AI gateway to call XXXX LLM to help build a half-marathon training plan based on a users inputs"
 authors = [
     { name = "tyehuan1", email = "tyehuan@gmail.com" }
 ]
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "gradio>=6.26.0",
+    "openai>=3.6.0",
+]
 
 [project.scripts]
 cy590-half-marathon-planner = "cy590_half_marathon_planner:main"

@@ -37,6 +37,7 @@ def build_demo() -> gr.ChatInterface:
         description=DESCRIPTION,
         examples=EXAMPLES,
         cache_examples=False,
+        analytics_enabled=False,
         save_history=True,
     )
 

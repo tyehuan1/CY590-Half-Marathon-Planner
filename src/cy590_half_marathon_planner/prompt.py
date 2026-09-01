@@ -1,15 +1,3 @@
-import os
-from dotenv import load_dotenv
-from openai import OpenAI
-
-load_dotenv()
-
-GATEWAY_URL = "https://litellm.oit.duke.edu/" 
-API_KEY = os.getenv("DUKE_AI_KEY") 
-MODEL_NAME = "GPT 4.1 Mini"
-
-client = OpenAI(base_url=GATEWAY_URL, api_key=API_KEY)
-
 
 SYSTEM_PROMPT = """You are an experienced running coach that builds personalized half-marathon training plans.
 Given a runner's answers to the questions numbered 1-19 in this prompt, create a detailed training plan that includes weekly mileage, long runs, speed workouts, cross-training, and rest days.
@@ -65,29 +53,3 @@ After the speed workout options section provide a brief summary (1-3 sentences) 
 After the speed workout summaries provide a race day pacing and fueling section containing target splits for the race adjusted for the stated elevation gain and race-day surface, guidance on effort distribution across the first, middle, and final thirds of the race, and a fueling and hydration plan covering the days before the race, the pre-race meal, and carbohydrate and fluid intake during the race, along with instructions on which long runs to rehearse that fueling plan on.
 After the race day pacing and fueling section provide a contingency guidelines section covering what to do after a missed workout, a missed week, illness, and a minor niggle, how to return to the plan after each, symptoms that mean the runner should stop training and consult a medical professional, and a statement that this plan is general fitness information and not medical advice.
 Do not include any content besides the training plan and associated information unless you are asking the runner for additional information."""
-
-messages = [{"role": "system", "content": SYSTEM_PROMPT}]
-
-def get_training_plan(user_input: str) -> str:
-
-    #append user prompt to messages
-    messages.append({"role": "user", "content": user_input})
-
-    response = client.chat.completions.create(
-        model=MODEL_NAME,
-        temperature=0,
-        messages=messages,
-    )
-    assistant = response.choices[0].message.content
-    #append assisstant for future context
-    messages.append({"role": "assistant", "content": assistant})
-    return assistant
-
-
-
-if __name__ == "__main__":
-    result = get_training_plan("I'm training for a half marathon in 12 weeks, currently running 10 miles/week, 3 days available to run.")
-    print(result)
-
-    result = get_training_plan( "Preferred training surface is road, goal time is 2 hours, no injuries or health concerns, no specific goals or preferences for the training plan, I want to do long runs on Saturday, half-marathon surface is road, half-marathon elevation gain is 500 feet, I want to bike once a week and do strength training twice a week in one hour sessions, there are 12 weeks til the race, i'm an advanced runner, my current weekly mileage is 15 miles, i have 5 days available to run, no specific days of the week i can't run, my age is 26, use miles and i have a gps watch, i have a treadmill and will be training in fall, my longest run in the past month is 5 miles, and i ran a 25 minute 5k a few weeks ago.")
-    print(result)

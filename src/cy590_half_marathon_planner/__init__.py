@@ -1,2 +1,3 @@
-def main() -> None:
-    print("Hello from cy590-half-marathon-planner!")
+from cy590_half_marathon_planner.app import main
+
+__all__ = ["main"]

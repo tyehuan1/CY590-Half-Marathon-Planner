@@ -39,6 +39,8 @@ def build_demo() -> gr.ChatInterface:
         cache_examples=False,
         analytics_enabled=False,
         save_history=True,
+        api_name="chat",
+        api_visibility="private",
     )
 
 
@@ -49,7 +51,7 @@ def main() -> None:
         server_name="127.0.0.1",
         server_port=7860,
         share=False,
-        show_api=False,
+        footer_links=["gradio", "settings"],
     )
 
 

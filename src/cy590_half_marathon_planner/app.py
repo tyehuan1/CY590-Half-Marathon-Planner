@@ -40,14 +40,14 @@ def on_generate(*values):
     (
         surface, weeks, goal_h, goal_m, goal_s, mileage, experience,
         injuries, goals, long_run_day, race_surface, elevation,
-        days_available, days_unavailable, longest_run, race_distance,
+        days_unavailable, longest_run, race_distance,
         race_h, race_m, race_s, age, temperature, device, history,
-    ) = values[:23]
-    cross_values = values[23:]
+    ) = values[:22]
+    cross_values = values[22:]
 
     errors = validate(
         weeks, goal_h, goal_m, goal_s, mileage, long_run_day,
-        days_available, days_unavailable, longest_run, race_distance,
+        days_unavailable, longest_run, race_distance,
         race_h, race_m, race_s, cross_values,
     )
     if errors:
@@ -56,8 +56,8 @@ def on_generate(*values):
     message = build_intake_message(
         surface, cross_values, weeks, goal_h, goal_m, goal_s, mileage,
         experience, injuries, goals, long_run_day, race_surface, elevation,
-        days_available, days_unavailable, longest_run, race_distance,
-        race_h, race_m, race_s, age, temperature, device,
+        days_unavailable, longest_run, race_distance, race_h, race_m, race_s,
+        age, temperature, device,
     )
     yield from stream_into_chat(message, history)
 
@@ -113,18 +113,16 @@ def build_demo() -> gr.Blocks:
                                            step=1, label="Seconds")
 
                 with gr.Accordion("Your schedule", open=True):
-                    days_available = gr.Slider(1, 7, value=4, step=1,
-                                               label="Days per week available to run")
                     long_run_day = gr.Dropdown(DAYS, value="Saturday",
                                                label="Preferred long-run day")
-                    days_unavailable = gr.CheckboxGroup(
-                        DAYS, value=[], label="Days unavailable")
+                    days_unavailable = gr.CheckboxGroup(DAYS, value=[],
+                                                label="Days you cannot train (no running or cross-training)")
                     surface = gr.Dropdown(SURFACES, value="Road",
-                                          label="Preferred training surface")
+                                                label="Preferred training surface")
                     temperature = gr.Dropdown(TEMPERATURES, value="Mild (55-69F)",
-                                              label="Training temperature")
+                                                label="Training temperature")
                     device = gr.Dropdown(DEVICES, value="GPS watch",
-                                         label="Training device")
+                                                label="Training device")
 
                 with gr.Accordion("Cross-training", open=False):
                     gr.Markdown("Leave a row set to *None* to skip it.")
@@ -172,7 +170,7 @@ def build_demo() -> gr.Blocks:
         form_inputs = [
             surface, weeks, goal_h, goal_m, goal_s, mileage, experience,
             injuries, goals, long_run_day, race_surface, elevation,
-            days_available, days_unavailable, longest_run, race_distance,
+            days_unavailable, longest_run, race_distance,
             race_h, race_m, race_s, age, temperature, device, chatbot,
         ] + cross_components
 
